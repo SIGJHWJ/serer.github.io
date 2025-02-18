@@ -1,0 +1,58 @@
+
+<php
+$to      = '받는사람@gmail.com';
+$subject = 'html을 보냈습니다.';
+$fp = fopen('mailtest.html',"r");
+$message = fread($fp,filesize('mailtest.html'));
+$name = '김광인';
+$age = '21';
+$gender = '남자';
+$message = str_replace('{name}', $name, $message);
+$message = str_replace('{age}', $age, $message);
+$message = str_replace('{gender}', $gender, $message);
+echo $message;
+// html 메일을 보낼 때 꼭 이헤더가 붙어야한다.
+$headers[] = 'MIME-Version: 1.0';
+$headers[] = 'Content-type: text/html; charset=utf-8';
+// Additional headers
+$headers[] = 'To: Kim<받는사람@gmail.com>';
+$headers[] = 'From: Admin<test@naver.com>';
+$headers[] = 'Cc: Kim1<참조인1@naver.com>,Kim2<참조인2@gmail.com>';
+$headers[] = 'Bcc: 숨은참조인3@gmail.com';
+<?php
+$result =mail($to, $subject, $message, implode("\r\n", $headers));
+echo "메일 성공여부 : ";
+if($result){echo "성공";}else{echo "실패";}
+
+
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style type="text/css">
+table tr td{
+border: 1px solid #5da399;
+text-align: center;
+padding: 10px;
+}
+</style>
+</head>
+
+<body>
+	<table>
+		<tr>
+			<td>이름</td>
+			<td>{name}</td>
+		</tr>		
+		<tr>
+			<td>나이</td>
+			<td>{age}</td>
+		</tr>		
+		<tr>
+			<td>성별</td>
+			<td>{gender}</td>
+		</tr>
+	</table>
+</body>
+</html>
